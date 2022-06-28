@@ -3,13 +3,15 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import MovieButton from "../movieButton/MovieButton";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { FreeMode, Pagination } from "swiper";
+import { FreeMode, Pagination, Lazy } from "swiper";
 import * as api from "../../api";
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/free-mode";
+import "swiper/css/lazy";
 import "./style.css";
+
 import {
   GENERE_POPULAR,
   GENERE_SEARCH_RESULT,
@@ -112,6 +114,7 @@ export default function MoviesList({ genre, words }) {
               slidesPerView={slidesPerView}
               spaceBetween={20}
               freeMode={true}
+              lazy={true}
               pagination={{
                 clickable: true,
               }}
@@ -122,7 +125,7 @@ export default function MoviesList({ genre, words }) {
               mousewheel={{
                 invert: true,
               }}
-              modules={[FreeMode, Pagination]}
+              modules={[Lazy, FreeMode, Pagination]}
               className="mySwiper"
             >
               {Array.from(movieList).map((movie) => {

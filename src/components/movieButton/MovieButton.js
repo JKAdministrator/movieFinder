@@ -1,10 +1,6 @@
 import * as React from "react";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
+import { Card, CardMedia } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { Rating } from "@mui/material";
 import { setDetailState } from "../../actions/ui";
 export default function MovieButton({ movie }) {
   const dispatch = useDispatch();
@@ -24,12 +20,13 @@ export default function MovieButton({ movie }) {
       <CardMedia
         component="img"
         height="80"
-        image={imageSrc}
+        data-src={imageSrc}
+        className="swiper-lazy"
         onError={({ currentTarget }) => {
           currentTarget.onerror = null; // para evitar un loop si incluso la imagen de error falla al cargarse
           currentTarget.src = "./noMovieImage.jpg";
         }}
-        alt="green iguana"
+        alt={movie.name}
       />
     </Card>
   );

@@ -3,7 +3,7 @@ import "./App.css";
 import Navbar from "./components/navbar/Navbar";
 import MoviesList from "./components/moviesList/MoviesList";
 import { useDispatch, useSelector } from "react-redux";
-import { getConfig, getMovies } from "./actions/movies";
+import { getConfig } from "./actions/movies";
 import FiltersDialog from "./components/filtersDialog/FiltersDialog";
 import DetailDialog from "./components/detailDialog/DetailDialog";
 import * as api from "./api";
