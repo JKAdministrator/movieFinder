@@ -8,7 +8,7 @@
   justify-content: space-evenly;
   height: max-content;
   position: relative;
-  background-color: black;
+  background-color: #0e0e0e;
 }
 .footer > * {
   max-width: 30rem;
@@ -60,9 +60,7 @@
 #createAccountButton {
   grid-area: a7;
 }
-.footer input {
-  background-color: white !important;
-}
+
 footer h6,
 footer span,
 footer p,

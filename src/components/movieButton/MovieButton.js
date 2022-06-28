@@ -9,7 +9,12 @@ export default function MovieButton({ movie }) {
   const appState = useSelector((state) => {
     return state;
   });
-  const imageSrc = `${appState?.movies?.config?.images?.secure_base_url}original${movie.poster_path}`;
+
+  const imageSrc =
+    appState?.movies?.config?.images?.secure_base_url && movie.poster_path
+      ? `${appState?.movies?.config?.images?.secure_base_url}original${movie.poster_path}`
+      : "./noMovieImage".jpg;
+
   const onClickCardHandler = (e) => {
     searchParams.set("movieId", movie.id);
     setSearchParams(searchParams);

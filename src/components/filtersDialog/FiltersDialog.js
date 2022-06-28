@@ -24,8 +24,9 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export default function FiltersDialog() {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  const [open, setOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [showFilters, setShowFilters] = useState(false);
+
   const [ratingValue, setRatingValue] = useState(
     searchParams.get("rating") ? Number(searchParams.get("rating")) : 0
   );
@@ -34,31 +35,39 @@ export default function FiltersDialog() {
   );
 
   useEffect(() => {
-    searchParams.get("showFilters") ? setOpen(true) : setOpen(false);
+    console.log("searchParams changed ", {
+      searchParams,
+      keys: Array.from(searchParams.keys()),
+    });
+    setShowFilters(searchParams.has("showFilters"));
   }, [searchParams]);
 
   const handleSave = () => {
-    searchParams.delete("showFilters");
     ratingValueNew > 0
       ? searchParams.set("rating", ratingValueNew)
       : searchParams.delete("rating");
+    searchParams.delete("showFilters");
+    console.log("--> FiltersDialog.handleSave ->changing params to null");
     setSearchParams(searchParams);
+    setShowFilters(false);
     setRatingValue(ratingValueNew);
   };
 
   const handleCancel = () => {
-    searchParams.delete("showFilters");
     ratingValue > 0
       ? searchParams.set("rating", ratingValue)
       : searchParams.delete("rating");
+    searchParams.delete("showFilters");
+    console.log("--> FiltersDialog.handleCancel ->changing params to null");
     setSearchParams(searchParams);
+    setShowFilters(false);
     setRatingValueNew(ratingValue);
   };
 
   return (
     <Dialog
       fullScreen={fullScreen}
-      open={open}
+      open={showFilters}
       TransitionComponent={Transition}
     >
       <AppBar sx={{ position: "relative" }}>
@@ -76,7 +85,11 @@ export default function FiltersDialog() {
           </Typography>
         </Toolbar>
       </AppBar>
-      <List>
+      <List
+        style={{
+          minWidth: "17rem",
+        }}
+      >
         <ListItem
           style={{
             justifyContent: "space-between",

@@ -11,6 +11,8 @@ import _ from "lodash";
 import { Box } from "@mui/material";
 import Footer from "./components/footer/Footer";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 function selectRandomGenres(genres) {
   let randomGenres = [];
   let randomItem;
@@ -28,10 +30,15 @@ function selectRandomGenres(genres) {
   return randomGenres;
 }
 
+const darkTheme = createTheme({
+  palette: {
+    mode: "dark",
+  },
+});
+
 function App() {
   const dispatch = useDispatch();
   const [randomGenres, setRandomGenres] = useState([]);
-
   const searchConfig = useSelector((state) => {
     return state?.movies?.searchConfig;
   });
@@ -48,20 +55,21 @@ function App() {
 
   return (
     <>
-      <BrowserRouter>
-        <Box
-          style={{
-            minHeight: "100vh",
-          }}
-        >
-          <div className="App">
-            <Navbar />
-            <Routes>
-              <Route
-                path="/"
-                exact
-                element={
-                  <>
+      <ThemeProvider theme={darkTheme}>
+        <BrowserRouter>
+          <Routes>
+            <Route path="*" element={<>404 Not found</>} />
+            <Route
+              path="/"
+              exact
+              element={
+                <Box
+                  style={{
+                    minHeight: "100vh",
+                  }}
+                >
+                  <div className="App">
+                    <Navbar />
                     <Box style={{ flexGrow: "1" }}>
                       <MoviesList key={-1} genre={{ id: -1 }} />
                       {randomGenres.map((g) => {
@@ -82,14 +90,14 @@ function App() {
                     </Box>
                     <DetailDialog />
                     <FiltersDialog />
-                  </>
-                }
-              />
-            </Routes>
-            <Footer />
-          </div>
-        </Box>
-      </BrowserRouter>
+                    <Footer />
+                  </div>
+                </Box>
+              }
+            />
+          </Routes>
+        </BrowserRouter>
+      </ThemeProvider>
     </>
   );
 }

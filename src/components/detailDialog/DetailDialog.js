@@ -48,13 +48,14 @@ export default function DetailDialog({ isOpen }) {
     return state?.movies?.config?.genres ? state?.movies?.config?.genres : [];
   });
 
-  const secure_base_url = useSelector((state) => {
-    return state?.movies?.config?.images?.secure_base_url;
+  const appState = useSelector((state) => {
+    return state;
   });
-
-  const imageSrc = movieData?.backdrop_path
-    ? `${secure_base_url}original/${movieData.backdrop_path}`
-    : "./noMovieImage.jpg";
+  const imageSrc =
+    movieData?.backdrop_path &&
+    appState?.movies?.config?.images?.secure_base_url
+      ? `${appState?.movies?.config?.images?.secure_base_url}original/${movieData.backdrop_path}`
+      : "./noMovieImage.jpg";
   const genres = movieData?.genres
     ? Array.from(movieData.genres)
         .map((g) => {
@@ -115,7 +116,7 @@ export default function DetailDialog({ isOpen }) {
             }}
           >
             <Typography gutterBottom variant="h4" component="div">
-              {movieData.title}
+              {movieData?.title}
             </Typography>
             <Typography
               gutterBottom
@@ -123,7 +124,7 @@ export default function DetailDialog({ isOpen }) {
               component="div"
               style={{ opacity: "0.7" }}
             >
-              Original Title: "{movieData.original_title}"
+              Original Title: "{movieData?.original_title}"
             </Typography>
             <Typography variant="body1" color="text.secondary">
               {movieData?.overview}

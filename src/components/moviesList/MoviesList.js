@@ -118,11 +118,12 @@ export default function MoviesList({ genre, words }) {
             <Typography
               gutterBottom
               variant="h4"
-              component="div"
+              component="h3"
               style={{
                 textAlign: "left",
                 padding: "1rem",
                 margin: "0px",
+                color: "#e5e5e5",
               }}
             >
               {title}

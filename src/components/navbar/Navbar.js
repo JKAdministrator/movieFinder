@@ -60,23 +60,25 @@ export default function Navbar() {
   const [searchWords, setSearchWords] = useState(
     searchParams.get("words") ? searchParams.get("words") : ""
   );
+
   useEffect(() => {
-    setSearchWords(searchParams.get("words") ? searchParams.get("words") : "");
+    searchParams.has("words")
+      ? setSearchWords(searchParams.get("words"))
+      : setSearchWords("");
   }, [searchParams]);
-  const handleDebounceFn = (inputValue) => {
-    inputValue.length > 0
-      ? searchParams.set("words", inputValue)
-      : searchParams.delete("words");
-    setSearchParams(searchParams);
-  };
-  const debounceSearch = useCallback(_debounce(handleDebounceFn, 300), []);
 
   const onSearchChangeHandler = (e) => {
-    setSearchWords(e.target.value);
-    debounceSearch(e.target.value);
+    e.preventDefault();
+    /*debounceSearch(e.target.value);*/
+    e?.target?.value
+      ? searchParams.set("words", e.target.value)
+      : searchParams.delete("words");
+    setSearchParams(searchParams);
+    /*setSearchWords(e.target.value);*/
   };
 
   const onClickFilterButtonHandler = (e) => {
+    console.log("--> Navbar.onClickFilterButtonHandler ->changing params to 1");
     searchParams.set("showFilters", "1");
     setSearchParams(searchParams);
   };
