@@ -1,0 +1,92 @@
+.footer {
+  width: calc(100% - 2rem);
+  padding: 1rem;
+  margin: 0px;
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  justify-content: space-evenly;
+  height: max-content;
+  position: relative;
+  background-color: black;
+}
+.footer > * {
+  max-width: 30rem;
+}
+#loginForm {
+  position: relative;
+  width: 100%;
+  height: max-content;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(max-content, 6);
+  grid-template-areas:
+    "a1 a1"
+    "a2 a3"
+    "a4 a4"
+    "a5 a5"
+    "a6 a7";
+  gap: 0.4rem;
+}
+#infoForm {
+  position: relative;
+  width: 50%;
+  height: max-content;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#loginFormTitle {
+  grid-area: a1;
+}
+#firstName {
+  grid-area: a2;
+}
+#lastName {
+  grid-area: a3;
+}
+#emailAddress {
+  grid-area: a4;
+}
+#password {
+  grid-area: a5;
+}
+
+#signInAccountButton {
+  grid-area: a6;
+}
+#createAccountButton {
+  grid-area: a7;
+}
+.footer input {
+  background-color: white !important;
+}
+footer h6,
+footer span,
+footer p,
+footer li {
+  color: white !important;
+}
+footer h6 {
+  font-weight: bold;
+}
+#infoP {
+  opacity: 0.7;
+  text-align: justify;
+  width: calc(100% - 2rem);
+  padding: 1rem;
+}
+footer li {
+  text-align: left;
+}
+@media (max-width: 780px) {
+  .footer {
+    flex-flow: column;
+  }
+  .footer > * {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+}
