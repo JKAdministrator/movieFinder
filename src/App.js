@@ -10,10 +10,26 @@ import * as api from "./api";
 import _ from "lodash";
 import { Box } from "@mui/material";
 import Footer from "./components/footer/Footer";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+function selectRandomGenres(genres) {
+  let randomGenres = [];
+  let randomItem;
+  for (let i = 0; i < 5; i++) {
+    randomItem = _.sample(genres);
+    randomGenres.push(
+      genres.splice(
+        genres.findIndex((g) => {
+          return g.id === randomItem.id;
+        }),
+        1
+      )[0]
+    );
+  }
+  return randomGenres;
+}
+
 function App() {
   const dispatch = useDispatch();
-  const [apiToken, setApiToken] = useState(localStorage.token);
-  const [isReady, setIsReady] = useState(false);
   const [randomGenres, setRandomGenres] = useState([]);
 
   const searchConfig = useSelector((state) => {
@@ -22,69 +38,58 @@ function App() {
 
   //primera carga de la app graba el token en localStorage
   useEffect(() => {
+    dispatch(getConfig());
     api.fetchGenres().then((result) => {
-      let randomGenres = [];
-      let genres = [...result.data.genres];
-      let randomItem;
-      for (let i = 0; i < 5; i++) {
-        randomItem = _.sample(genres);
-        randomGenres.push(randomItem);
-        genres.splice(
-          genres.findIndex((g) => {
-            return g.id === randomItem.id;
-          }),
-          1
-        );
-        genres = [...genres];
-      }
       setRandomGenres((_prevstate) => {
-        return randomGenres;
+        return selectRandomGenres([...result.data.genres]);
       });
     });
   }, []);
 
-  //si se pudo grabar el token obtiene la configuracion del api
-  useEffect(() => {
-    dispatch(getConfig());
-  }, [apiToken]);
-
   return (
     <>
-      <Box
-        style={{
-          minHeight: "100vh",
-        }}
-      >
-        <div className="App">
-          <Navbar />
-          <Box style={{ flexGrow: "1" }}>
-            {searchConfig?.words && searchConfig?.words?.length > 0 && (
-              <MoviesList
-                key={-2}
-                genre={{ id: -2, name: `Results for "${searchConfig?.words}"` }}
-                words={searchConfig?.words}
+      <BrowserRouter>
+        <Box
+          style={{
+            minHeight: "100vh",
+          }}
+        >
+          <div className="App">
+            <Navbar />
+            <Routes>
+              <Route
+                path="/"
+                exact
+                element={
+                  <>
+                    <Box style={{ flexGrow: "1" }}>
+                      <MoviesList key={-1} genre={{ id: -1 }} />
+                      {randomGenres.map((g) => {
+                        return (
+                          <MoviesList
+                            key={g.id}
+                            genre={g}
+                            words={searchConfig?.words}
+                          />
+                        );
+                      })}
+                      <MoviesList
+                        key={-2}
+                        genre={{
+                          id: -2,
+                        }}
+                      />
+                    </Box>
+                    <DetailDialog />
+                    <FiltersDialog />
+                  </>
+                }
               />
-            )}
-            {(!searchConfig?.words || searchConfig?.words?.length === 0) && (
-              <>
-                <MoviesList key={-1} genre={{ id: -1, name: "Popular now" }} />
-                {randomGenres.map((g) => {
-                  return (
-                    <MoviesList
-                      key={g.id}
-                      genre={g}
-                      words={searchConfig?.words}
-                    />
-                  );
-                })}
-              </>
-            )}
-          </Box>
-          <FiltersDialog />
-          <DetailDialog />
-          <Footer />
-        </div>
-      </Box>
+            </Routes>
+            <Footer />
+          </div>
+        </Box>
+      </BrowserRouter>
     </>
   );
 }

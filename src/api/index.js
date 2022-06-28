@@ -27,3 +27,8 @@ export const fetchMoviesByWords = (words = "") => {
     headers: { Authorization: `Bearer ${process.env.REACT_APP_API_KEY}` },
   });
 };
+export const fetchMovieData = (id) => {
+  return API.get(`/movie/${id}`, {
+    headers: { Authorization: `Bearer ${process.env.REACT_APP_API_KEY}` },
+  });
+};

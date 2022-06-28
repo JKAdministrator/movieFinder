@@ -9,11 +9,10 @@ import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import Stack from "@mui/material/Stack";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
-import { useDispatch, useSelector } from "react-redux";
-import { setSearchConfig } from "../../actions/movies";
-import { setFiltersState, setResultState } from "../../actions/ui";
+import { useSelector } from "react-redux";
 import { Avatar, Badge, Tooltip } from "@mui/material";
 import _debounce from "lodash/debounce";
+import { useSearchParams } from "react-router-dom";
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -57,25 +56,18 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function Navbar() {
-  const dispatch = useDispatch();
-
-  const [searchWords, setSearchWords] = useState("");
-  const uiState = useSelector((state) => {
-    return state?.ui;
-  });
-  const moviesRaitingFilter = useSelector((state) => {
-    return state?.movies?.searchConfig?.raiting;
-  });
-
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchWords, setSearchWords] = useState(
+    searchParams.get("words") ? searchParams.get("words") : ""
+  );
+  useEffect(() => {
+    setSearchWords(searchParams.get("words") ? searchParams.get("words") : "");
+  }, [searchParams]);
   const handleDebounceFn = (inputValue) => {
-    dispatch(
-      setSearchConfig({ words: inputValue, raiting: moviesRaitingFilter })
-    );
-    if (inputValue && inputValue.length > 0) {
-      dispatch(setResultState({ resultState: true }));
-    } else {
-      dispatch(setResultState({ resultState: false }));
-    }
+    inputValue.length > 0
+      ? searchParams.set("words", inputValue)
+      : searchParams.delete("words");
+    setSearchParams(searchParams);
   };
   const debounceSearch = useCallback(_debounce(handleDebounceFn, 300), []);
 
@@ -84,14 +76,9 @@ export default function Navbar() {
     debounceSearch(e.target.value);
   };
 
-  useEffect(() => {
-    dispatch(
-      setSearchConfig({ words: searchWords, raiting: moviesRaitingFilter })
-    );
-  }, []);
-
   const onClickFilterButtonHandler = (e) => {
-    dispatch(setFiltersState({ filtersState: true }));
+    searchParams.set("showFilters", "1");
+    setSearchParams(searchParams);
   };
 
   return (
@@ -110,7 +97,7 @@ export default function Navbar() {
                 margin: "0px",
               }}
             >
-              <img src="./logo512.png" />
+              <img src="./logo512.png" alt="Logo" />
             </Box>
             <Typography
               variant="h6"
@@ -155,7 +142,10 @@ export default function Navbar() {
                 >
                   <Badge
                     badgeContent={
-                      uiState.filtersCount ? uiState.filtersCount : 0
+                      searchParams.get("rating") &&
+                      searchParams.get("rating").length > 0
+                        ? 1
+                        : 0
                     }
                     color="secondary"
                     anchorOrigin={{

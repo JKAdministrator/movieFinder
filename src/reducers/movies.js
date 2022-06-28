@@ -1,9 +1,16 @@
 import {
   FETCH_MOVIES_API_CONFIG,
   SET_MOVIES_SEARCH_CONFIG,
-} from "../constants/actionTypes";
+  FETCH_MOVIE_DATA,
+  REMOVE_MOVIE_DATA,
+} from "../constants/moviesActionTypes";
 export default (
-  moviesData = { result: [], config: {}, searchConfig: {} },
+  moviesData = {
+    result: [],
+    config: {},
+    searchConfig: {},
+    selectedMovieData: undefined,
+  },
   action
 ) => {
   switch (action.type) {
@@ -20,6 +27,15 @@ export default (
         ? { ...moviesData, config: action.payload }
         : moviesData;
     }
+    case FETCH_MOVIE_DATA: {
+      return action.payload
+        ? { ...moviesData, selectedMovieData: action.payload }
+        : moviesData;
+    }
+    case REMOVE_MOVIE_DATA: {
+      return { ...moviesData, selectedMovieData: undefined };
+    }
+
     default: {
       return moviesData;
     }

@@ -1,21 +1,20 @@
 import { Box, Button, Skeleton, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import MovieButton from "../movieButton/MovieButton";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { FreeMode, Pagination, Lazy } from "swiper";
+import { FreeMode, Pagination } from "swiper";
 import * as api from "../../api";
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/free-mode";
-import "swiper/css/lazy";
 import "./style.css";
 
 import {
   GENERE_POPULAR,
   GENERE_SEARCH_RESULT,
 } from "../../constants/movieGenereTypes";
+import { useSearchParams } from "react-router-dom";
 function getSlidesPerView() {
   return Math.trunc(window.innerWidth / 250);
 }
@@ -23,13 +22,53 @@ function getSlidesPerView() {
 export default function MoviesList({ genre, words }) {
   const [movieList, setMovieList] = useState(null);
   const [slidesPerView, setSlidesPerView] = useState(getSlidesPerView()); // la cantidad de slides por vista cambia en base al tamaño de pantalla
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchData, setSearchData] = useState({
+    words: searchParams.get("words"),
+    rating: searchParams.get("rating"),
+  });
+  const [title, setTitle] = useState("");
 
+  //obtiene los datos del query cada vez que se actualiza
+  useEffect(() => {
+    setSearchData({
+      words: searchParams.get("words"),
+      rating: searchParams.get("rating"),
+    });
+    if (genre.id === GENERE_SEARCH_RESULT)
+      setTitle(`Resuls for "${searchParams.get("words")}"`);
+  }, [searchParams]);
+
+  // si es el componente que muestra la busqueda debe volver a buscar ante un cambio en los datos
+  useEffect(() => {
+    if (genre.id === GENERE_SEARCH_RESULT) {
+      if (searchData.words && searchData.words.length > 0) {
+        api.fetchMoviesByWords(searchData.words).then((result) => {
+          let moviesList = [...result.data.results];
+          const rating = searchData.rating;
+          if (rating) {
+            let filteredMoviesList = moviesList.filter((m) => {
+              return Math.round(m.vote_average / 2) === Number(rating);
+            });
+            setMovieList(filteredMoviesList);
+          } else setMovieList(moviesList);
+          handleResize();
+        });
+      } else {
+        setMovieList([]);
+        handleResize();
+      }
+    }
+  }, [searchData]);
+
+  //cuando es un componente normal (busca por genero de pelicula) se realiza la busqueda solo al inicio
   useEffect(() => {
     switch (genre.id) {
       case GENERE_POPULAR: {
         api.fetchMoviesByPopularity().then((result) => {
           setMovieList(result.data.results);
         });
+        setTitle(`Popular Movies`);
         break;
       }
       case GENERE_SEARCH_RESULT: {
@@ -39,6 +78,7 @@ export default function MoviesList({ genre, words }) {
         api.fetchMoviesByGenre(genre).then((result) => {
           setMovieList(result.data.results);
         });
+        setTitle(genre.name);
         break;
       }
     }
@@ -51,33 +91,14 @@ export default function MoviesList({ genre, words }) {
   const handleResize = (e) => {
     setSlidesPerView(getSlidesPerView());
   };
-  const searchConfig = useSelector((state) => {
-    return state?.movies?.searchConfig;
-  });
-  useEffect(() => {
-    if (
-      genre.id === GENERE_SEARCH_RESULT &&
-      searchConfig?.words &&
-      searchConfig?.words.length > 0
-    ) {
-      api.fetchMoviesByWords(searchConfig?.words).then((result) => {
-        let moviesList = [...result.data.results];
-        if (searchConfig?.raiting && searchConfig?.raiting > 0) {
-          moviesList = moviesList.filter((m) => {
-            return (
-              m.vote_average >= searchConfig?.raiting * 2 - 2 &&
-              m.vote_average <= searchConfig?.raiting * 2
-            );
-          });
-        }
-        setMovieList(moviesList);
-      });
-    }
-  }, [searchConfig, genre.id]);
 
   return (
     <>
-      {movieList && (
+      {((genre.id === GENERE_SEARCH_RESULT &&
+        searchData.words &&
+        searchData.words.length > 0) ||
+        (genre.id !== GENERE_SEARCH_RESULT &&
+          (!searchData.words || searchData.words.length === 0))) && (
         <Box
           style={{
             display: "flex",
@@ -104,17 +125,15 @@ export default function MoviesList({ genre, words }) {
                 margin: "0px",
               }}
             >
-              {genre.name}
+              {title}
             </Typography>
             {genre.id !== GENERE_SEARCH_RESULT && <Button>View All </Button>}
           </Box>
-
-          {movieList.length > 0 && (
+          {movieList && movieList?.length > 0 && (
             <Swiper
               slidesPerView={slidesPerView}
               spaceBetween={20}
               freeMode={true}
-              lazy={true}
               pagination={{
                 clickable: true,
               }}
@@ -125,19 +144,22 @@ export default function MoviesList({ genre, words }) {
               mousewheel={{
                 invert: true,
               }}
-              modules={[Lazy, FreeMode, Pagination]}
+              modules={[FreeMode, Pagination]}
               className="mySwiper"
             >
               {Array.from(movieList).map((movie) => {
                 return (
-                  <SwiperSlide key={genre.id + `-` + movie.id}>
+                  <SwiperSlide
+                    key={genre.id.toString() + `-` + movie.id.toString()}
+                    style={{ height: "auto" }}
+                  >
                     <MovieButton movie={movie} />
                   </SwiperSlide>
                 );
               })}
             </Swiper>
           )}
-          {movieList.length === 0 && (
+          {movieList && movieList.length === 0 && (
             <>
               <Typography
                 gutterBottom
@@ -158,14 +180,14 @@ export default function MoviesList({ genre, words }) {
               </ul>
             </>
           )}
+          {!movieList && (
+            <Skeleton
+              variant="rectangular"
+              style={{ width: "100%" }}
+              height={"12.5rem"}
+            />
+          )}
         </Box>
-      )}
-      {!movieList && (
-        <Skeleton
-          variant="rectangular"
-          style={{ width: "100%" }}
-          height={"12.5rem"}
-        />
       )}
     </>
   );

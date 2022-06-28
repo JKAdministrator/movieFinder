@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Dialog,
@@ -10,48 +10,55 @@ import {
   Typography,
   Slide,
   Rating,
+  DialogActions,
 } from "@mui/material";
+import { useTheme, useMediaQuery } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { useSelector, useDispatch } from "react-redux";
-import { setFiltersState } from "../../actions/ui";
-import { setSearchConfig } from "../../actions/movies";
+import { useDispatch } from "react-redux";
+import { useSearchParams } from "react-router-dom";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-function countFilters(raiting) {
-  let count = 0;
-  if (raiting > 0) count++;
-  return count;
-}
-
 export default function FiltersDialog() {
-  const filtersDialogstate = useSelector((state) => {
-    return state?.ui?.filtersState ? state.ui.filtersState : false;
-  });
-  const dispatch = useDispatch();
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const [open, setOpen] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [ratingValue, setRatingValue] = useState(
+    searchParams.get("rating") ? Number(searchParams.get("rating")) : 0
+  );
+  const [ratingValueNew, setRatingValueNew] = useState(
+    searchParams.get("rating") ? Number(searchParams.get("rating")) : 0
+  );
+
+  useEffect(() => {
+    searchParams.get("showFilters") ? setOpen(true) : setOpen(false);
+  }, [searchParams]);
 
   const handleSave = () => {
-    setRatingValue(ratingValueNew); //se graba el nuevo valor en el estado
-    const filtersCount = countFilters(ratingValueNew); //se cuenta la cantidad de filtros
-    dispatch(setFiltersState({ filtersState: false, filtersCount })); //se actualiza el estado global de la ui
-    dispatch(setSearchConfig({ raiting: ratingValueNew })); //se realiza la busqueda contra el api
+    searchParams.delete("showFilters");
+    ratingValueNew > 0
+      ? searchParams.set("rating", ratingValueNew)
+      : searchParams.delete("rating");
+    setSearchParams(searchParams);
+    setRatingValue(ratingValueNew);
   };
 
   const handleCancel = () => {
-    const filtersCount = countFilters(ratingValue); //se cuenta la cantidad de filtros
-    dispatch(setFiltersState({ filtersState: false, filtersCount })); //se actualiza el estado de la ui (solo cierra popup)
-    setRatingValueNew(ratingValue, 0); //se vuelve a los valores originales
+    searchParams.delete("showFilters");
+    ratingValue > 0
+      ? searchParams.set("rating", ratingValue)
+      : searchParams.delete("rating");
+    setSearchParams(searchParams);
+    setRatingValueNew(ratingValue);
   };
-
-  const [ratingValue, setRatingValue] = React.useState(0);
-  const [ratingValueNew, setRatingValueNew] = React.useState(0);
 
   return (
     <Dialog
-      fullScreen
-      open={filtersDialogstate}
+      fullScreen={fullScreen}
+      open={open}
       TransitionComponent={Transition}
     >
       <AppBar sx={{ position: "relative" }}>
@@ -67,9 +74,6 @@ export default function FiltersDialog() {
           <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
             Filters
           </Typography>
-          <Button autoFocus color="inherit" onClick={handleSave}>
-            Add Filter
-          </Button>
         </Toolbar>
       </AppBar>
       <List>
@@ -89,6 +93,9 @@ export default function FiltersDialog() {
           />
         </ListItem>
       </List>
+      <DialogActions>
+        <Button onClick={handleSave}>Save filters</Button>
+      </DialogActions>
     </Dialog>
   );
 }
