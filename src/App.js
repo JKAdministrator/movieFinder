@@ -13,6 +13,7 @@ import Footer from "./components/footer/Footer";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import Recomended from "./components/recomended/Recomended";
 function selectRandomGenres(genres) {
   let randomGenres = [];
   let randomItem;
@@ -39,19 +40,31 @@ const darkTheme = createTheme({
 function App() {
   const dispatch = useDispatch();
   const [randomGenres, setRandomGenres] = useState([]);
-  const searchConfig = useSelector((state) => {
-    return state?.movies?.searchConfig;
+  const [isReady, setIsReady] = useState(false);
+
+  //se obtiene el estado incial de la aplicacion
+  const configDataSate = useSelector((state) => {
+    return state;
   });
 
-  //primera carga de la app graba el token en localStorage
   useEffect(() => {
-    dispatch(getConfig());
+    dispatch(getConfig()); //se graba el estado inicial (datos de configuracion y parametros remotos del api)
     api.fetchGenres().then((result) => {
+      //se obtiene un conjunto de generos de peliculas al azar
       setRandomGenres((_prevstate) => {
         return selectRandomGenres([...result.data.genres]);
       });
     });
   }, []);
+
+  useEffect(() => {
+    //cuando el estado inciial de la app cambia se inciial la app si todavia no inició
+    console.log("APP configDataSate change", { configDataSate });
+    if (!isReady && configDataSate?.movies?.config?.images) {
+      console.log("app ready", { configDataSate });
+      setIsReady(true);
+    }
+  }, [configDataSate]);
 
   return (
     <>
@@ -63,36 +76,36 @@ function App() {
               path="/"
               exact
               element={
-                <Box
-                  style={{
-                    minHeight: "100vh",
-                  }}
-                >
-                  <div className="App">
-                    <Navbar />
-                    <Box style={{ flexGrow: "1" }}>
-                      <MoviesList key={-1} genre={{ id: -1 }} />
-                      {randomGenres.map((g) => {
-                        return (
+                <>
+                  {!isReady && <Box>Loading</Box>}
+                  {isReady && (
+                    <Box
+                      style={{
+                        minHeight: "100vh",
+                      }}
+                    >
+                      <div className="App">
+                        <Navbar />
+                        <Box style={{ flexGrow: "1" }}>
+                          <Recomended />
+                          <MoviesList key={-1} genre={{ id: -1 }} />
+                          {randomGenres.map((g) => {
+                            return <MoviesList key={g.id} genre={g} />;
+                          })}
                           <MoviesList
-                            key={g.id}
-                            genre={g}
-                            words={searchConfig?.words}
+                            key={-2}
+                            genre={{
+                              id: -2,
+                            }}
                           />
-                        );
-                      })}
-                      <MoviesList
-                        key={-2}
-                        genre={{
-                          id: -2,
-                        }}
-                      />
+                        </Box>
+                        <DetailDialog />
+                        <FiltersDialog />
+                        <Footer />
+                      </div>
                     </Box>
-                    <DetailDialog />
-                    <FiltersDialog />
-                    <Footer />
-                  </div>
-                </Box>
+                  )}
+                </>
               }
             />
           </Routes>

@@ -35,10 +35,6 @@ export default function FiltersDialog() {
   );
 
   useEffect(() => {
-    console.log("searchParams changed ", {
-      searchParams,
-      keys: Array.from(searchParams.keys()),
-    });
     setShowFilters(searchParams.has("showFilters"));
   }, [searchParams]);
 
@@ -47,7 +43,6 @@ export default function FiltersDialog() {
       ? searchParams.set("rating", ratingValueNew)
       : searchParams.delete("rating");
     searchParams.delete("showFilters");
-    console.log("--> FiltersDialog.handleSave ->changing params to null");
     setSearchParams(searchParams);
     setShowFilters(false);
     setRatingValue(ratingValueNew);
@@ -58,7 +53,6 @@ export default function FiltersDialog() {
       ? searchParams.set("rating", ratingValue)
       : searchParams.delete("rating");
     searchParams.delete("showFilters");
-    console.log("--> FiltersDialog.handleCancel ->changing params to null");
     setSearchParams(searchParams);
     setShowFilters(false);
     setRatingValueNew(ratingValue);

@@ -32,3 +32,9 @@ export const fetchMovieData = (id) => {
     headers: { Authorization: `Bearer ${process.env.REACT_APP_API_KEY}` },
   });
 };
+
+export const fetchTrendingMovies = (id) => {
+  return API.get(`/trending/movie/day`, {
+    headers: { Authorization: `Bearer ${process.env.REACT_APP_API_KEY}` },
+  });
+};

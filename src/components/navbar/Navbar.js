@@ -112,7 +112,7 @@ export default function Navbar() {
                 overflow: "initial",
               }}
             >
-              Movie Finder
+              Movieup
             </Typography>
             <Stack
               direction="row"

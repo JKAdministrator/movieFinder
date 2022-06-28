@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import MovieButton from "../movieButton/MovieButton";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Pagination } from "swiper";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import * as api from "../../api";
 // Import Swiper styles
 import "swiper/css";
@@ -128,7 +129,12 @@ export default function MoviesList({ genre, words }) {
             >
               {title}
             </Typography>
-            {genre.id !== GENERE_SEARCH_RESULT && <Button>View All </Button>}
+            {genre.id !== GENERE_SEARCH_RESULT && (
+              <Button>
+                More
+                <NavigateNextIcon />
+              </Button>
+            )}
           </Box>
           {movieList && movieList?.length > 0 && (
             <Swiper
@@ -170,6 +176,7 @@ export default function MoviesList({ genre, words }) {
                   textAlign: "left",
                   padding: "1rem",
                   margin: "0px",
+                  color: "white",
                 }}
               >
                 The search returned no matches. You can try the following:

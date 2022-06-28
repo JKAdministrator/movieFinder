@@ -34,6 +34,10 @@ export const getMovieData = (id) => async (disptach) => {
     });
   } catch (error) {
     console.error(error);
+    disptach({
+      type: FETCH_MOVIE_DATA,
+      payload: { error: error.message },
+    });
   }
 };
 

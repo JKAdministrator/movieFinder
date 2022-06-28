@@ -51,6 +51,7 @@ export default function DetailDialog({ isOpen }) {
   const appState = useSelector((state) => {
     return state;
   });
+
   const imageSrc =
     movieData?.backdrop_path &&
     appState?.movies?.config?.images?.secure_base_url
@@ -71,6 +72,8 @@ export default function DetailDialog({ isOpen }) {
     setSearchParams(searchParams);
     dispatch(removeMovieData(movieId));
   };
+
+  if (movieData?.error) handleClose();
 
   return (
     <Dialog
