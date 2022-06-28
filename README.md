@@ -43,7 +43,7 @@ We do not require amazing designs. A clean and minimal user interface will do. W
 - The codebase for the project was delivered in some way (your choice, preferably on github.com).
 - Anything else you think is important to understand the app.
 
-# FREQUENTLY ASKED QUESTIONS
+# Frequently Asked Questions
 
 **Do I need to add tests?**
 No.
@@ -58,5 +58,10 @@ There are no restrictions here, show us what you know. We love React and we love
 No, feel free to create the user interface as you wish. We only care about the code.
 
 
+# Project Considerations
 
-
+- Redux (react-redux) was used to maintain application state (mainly UI state) to avoid unnecessary prop-drilling
+- Interface design is similar to Netflix, with carousels to display movie listings
+- The interface was designed to prioritize mobile over desktop
+- The API version 3 from ww.themoviedb.org was used to simplify access. If you want to run the app locally, you should create an .env in the "src" folder with the environment variable "REACT_APP_API_KEY". This should have as value the access token belonging to a user who can execute queries on the api.
+- The app can be tested online on https://voluble-genie-f46638.netlify.app
