@@ -1,46 +1,62 @@
-# Getting Started with Create React App and Redux
+# About the project
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
+This project was created by request of a work proposal.
 
-## Available Scripts
+# Purpose of the application
 
-In the project directory, you can run:
+Your local movie theater is in dire need of attracting a new audience. To do this, they ask you to create a simple web application that allows users to discover new movies and search for them. Since they don't have a back-end service, the first version of the app will be built using the public API: https://developers.themoviedb.org/3 (FAQ: https://www.themoviedb.org/documentation/api)
 
-### `npm start`
+# Features that the application must have
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Discover
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Upon opening the web app, users should be able to see a list of movies suggested by the app and sorted by popularity.
+Pagination is not required for this version.
+- API reference: https://developers.themoviedb.org/3/discover/movie-discover
 
-### `npm test`
+### Search
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+In the discovery view, add a search bar at the top to let users look up information about movies. If the search field is empty, it displays the discovery results.
+- API Reference: https://developers.themoviedb.org/3/search/search-movies
 
-### `npm run build`
+### Filter by rating (Do this filtering on the client side)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The rating is a value between 0 and 10. Add a five-star rating filter (like https://dribbble.com/shots/1053518-Filters). When selecting a star, all stars to the left must also be selected. The rank of each star is 2, so if the first star is selected, only movies rated 0-2 should appear. If the second star is selected, only movies with a rating of 2 to 4 should appear, and so on. If the star that was clicked is the currently active star, disable the filter.
+- Rating field in movie model: `vote_average`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Detail view
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+When clicked, a detailed view should be displayed, showing more information about the movie.
 
-### `npm run eject`
+# App Design
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+We do not require amazing designs. A clean and minimal user interface will do. We want to see the movie images provided by the API. (look at https://dribbble.com/shots/1682568-Flixus-Homepage-WIP/attachments/266476 as a design suggestion, but you decide)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+# Development requirements
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- Use `create-react-app` for this project
+- Use the latest version of React
+- Provide all the necessary steps to launch the application
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+# Deliverables
 
-## Learn More
+- The codebase for the project was delivered in some way (your choice, preferably on github.com).
+- Anything else you think is important to understand the app.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+# FREQUENTLY ASKED QUESTIONS
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+**Do I need to add tests?**
+No.
+
+**Do I need to use any specific dependencies?**
+Aside from `React`, use what you feel comfortable with and what you think is necessary for this project
+
+**What kind of React functions can I use?**
+There are no restrictions here, show us what you know. We love React and we love using the latest features.
+
+**Do I have to follow the designs?**
+No, feel free to create the user interface as you wish. We only care about the code.
+
+
+
+
