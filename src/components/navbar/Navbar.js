@@ -11,7 +11,7 @@ import {
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import SearchIcon from "@mui/icons-material/Search";
 import { Avatar, Badge, Tooltip } from "@mui/material";
-import { useSearchParams } from "react-router-dom";
+import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
 import "./style.css";
 
 const Search = styled("div")(({ theme }) => ({
@@ -57,6 +57,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function Navbar() {
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchWords, setSearchWords] = useState(
     searchParams.get("words") ? searchParams.get("words") : ""
@@ -80,11 +81,23 @@ export default function Navbar() {
     setSearchParams(searchParams);
   };
 
+  const onLogoClickHandler = (e) => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+    navigate("/");
+  };
+
   return (
     <Box className="navbar">
       <AppBar>
         <Toolbar>
-          <Box className="logo" sx={{ display: { xs: "none", sm: "flex" } }}>
+          <Box
+            className="logo"
+            sx={{ display: { xs: "none", sm: "flex" } }}
+            onClick={onLogoClickHandler}
+          >
             <img src="./logoNavbar.png" alt="Logo" />
           </Box>
           <Stack direction="row" spacing={1} className="stack">

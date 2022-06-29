@@ -124,6 +124,7 @@ export default function MoviesList({ genre, words }) {
               slidesPerView={slidesPerView}
               spaceBetween={20}
               freeMode={true}
+              loop={true}
               pagination={{
                 clickable: true,
               }}
