@@ -60,7 +60,7 @@ No, feel free to create the user interface as you wish. We only care about the c
 
 # Project Considerations
 
-- Redux (react-redux) was used to maintain application state (mainly UI state) to avoid unnecessary prop-drilling
+- Redux (react-redux) was used to maintain application state (mainly UI state)
 - react-router-dom was used to enable query strings in the web url so that users can copy and paste the page they are on, keeping the state of the app while doing so. This does not mean that they will always have the same results since in the case of searches the results depend on the api endpoint. 
 - Interface design is similar to Netflix but designed to prioritize mobile over desktop
 - The API version 3 from ww.themoviedb.org was used to simplify access. If you want to run the app locally, you should create an .env in the "src" folder with the environment variable "REACT_APP_API_KEY". This should have as value the access token belonging to a user who can execute queries on the api.
