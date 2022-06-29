@@ -44,7 +44,13 @@ function App() {
             <Route
               path="*"
               element={
-                <Suspense fallback={<CircularProgress />}>
+                <Suspense
+                  fallback={
+                    <Box className="loadingappBox">
+                      <SvganimLoading />
+                    </Box>
+                  }
+                >
                   <NotFound />
                 </Suspense>
               }
@@ -60,7 +66,13 @@ function App() {
                     </Box>
                   )}
                   {isReady && (
-                    <Suspense fallback={<CircularProgress />}>
+                    <Suspense
+                      fallback={
+                        <Box className="loadingappBox">
+                          <SvganimLoading />
+                        </Box>
+                      }
+                    >
                       <Homepage />
                     </Suspense>
                   )}
