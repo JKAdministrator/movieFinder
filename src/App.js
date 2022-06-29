@@ -1,10 +1,11 @@
 import React, { Suspense, lazy, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getConfig } from "./actions/movies";
-import { CircularProgress } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import "./App.css";
+import SvganimLoading from "./components/svganimLoading/SvganimLoading";
 
 const darkTheme = createTheme({
   palette: {
@@ -31,6 +32,7 @@ function App() {
     if (!isReady && configData) setIsReady(true);
   }, [configData]);
 
+  //los componentes se cargan solo cuando son necesarios
   const NotFound = lazy(() => import("./components/notFound/NotFound.js"));
   const Homepage = lazy(() => import("./components/homepage/Homepage.js"));
 
@@ -52,7 +54,11 @@ function App() {
               exact
               element={
                 <>
-                  {!isReady && <CircularProgress />}
+                  {!isReady && (
+                    <Box className="loadingappBox">
+                      <SvganimLoading />
+                    </Box>
+                  )}
                   {isReady && (
                     <Suspense fallback={<CircularProgress />}>
                       <Homepage />
