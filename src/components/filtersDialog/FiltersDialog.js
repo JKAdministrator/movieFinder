@@ -14,7 +14,6 @@ import {
 } from "@mui/material";
 import { useTheme, useMediaQuery } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { useDispatch } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -75,7 +74,7 @@ export default function FiltersDialog() {
             <CloseIcon />
           </IconButton>
           <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-            Filters
+            Search Filters
           </Typography>
         </Toolbar>
       </AppBar>

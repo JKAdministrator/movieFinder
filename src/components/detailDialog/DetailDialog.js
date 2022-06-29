@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import {
-  Button,
   Dialog,
   Typography,
   Slide,
   Card,
-  CardActions,
   CardContent,
   CardMedia,
   Rating,
@@ -16,19 +14,18 @@ import {
   useTheme,
   useMediaQuery,
   CircularProgress,
-  Paper,
+  Button,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { getMovieData, removeMovieData } from "../../actions/movies";
+import "./style.css";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export default function DetailDialog({ isOpen }) {
-  const params = useParams();
   const dispatch = useDispatch();
   const theme = useTheme();
-  const navigate = useNavigate();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const [searchParams, setSearchParams] = useSearchParams();
   const [movieId, setMovieId] = useState(null);
@@ -48,15 +45,10 @@ export default function DetailDialog({ isOpen }) {
     return state?.movies?.config?.genres ? state?.movies?.config?.genres : [];
   });
 
-  const appState = useSelector((state) => {
-    return state;
+  const secure_base_url = useSelector((state) => {
+    return state?.movies?.config?.images?.secure_base_url;
   });
 
-  const imageSrc =
-    movieData?.backdrop_path &&
-    appState?.movies?.config?.images?.secure_base_url
-      ? `${appState?.movies?.config?.images?.secure_base_url}original/${movieData.backdrop_path}`
-      : "./noMovieImage.jpg";
   const genres = movieData?.genres
     ? Array.from(movieData.genres)
         .map((g) => {
@@ -98,7 +90,7 @@ export default function DetailDialog({ isOpen }) {
           <Fab
             color="primary"
             aria-label="add"
-            style={{ position: "absolute", top: "1rem", right: "1rem" }}
+            className="detaildialogCloseButton"
             onClick={handleClose}
           >
             <CloseIcon />
@@ -106,18 +98,14 @@ export default function DetailDialog({ isOpen }) {
           <CardMedia
             component="img"
             height="280"
-            image={imageSrc}
+            image={`${secure_base_url}original/${movieData.backdrop_path}`}
             alt="Movie Image"
-          />
-          <CardContent
-            style={{
-              display: "flex",
-              flexFlow: "column",
-              alignItems: "flex-start",
-              justifyContent: "flex-start",
-              gap: "0.2rem",
+            onError={({ currentTarget }) => {
+              currentTarget.onerror = null; // para evitar un loop si incluso la imagen de error falla al cargarse
+              currentTarget.src = "./backdropPlaceholder.jpg";
             }}
-          >
+          />
+          <CardContent className="detaildialogCardcontent">
             <Typography gutterBottom variant="h4" component="div">
               {movieData?.title}
             </Typography>
@@ -140,15 +128,7 @@ export default function DetailDialog({ isOpen }) {
               <b>Release date: </b>
               {movieData?.release_date}
             </Typography>
-            <Box
-              style={{
-                display: "flex",
-                flexFlow: "row",
-                alignItems: "center",
-                justifyContent: "flex-start",
-                gap: "1rem",
-              }}
-            >
+            <Box className="detaildialogActions">
               <Rating
                 name="read-only"
                 value={movieData?.vote_average ? movieData.vote_average / 2 : 0}
@@ -158,6 +138,13 @@ export default function DetailDialog({ isOpen }) {
               <Typography variant="body2" color="text.secondary">
                 {movieData?.vote_average} ({movieData?.vote_count} votes)
               </Typography>
+              <Button
+                color="primary"
+                variant="contained"
+                style={{ marginLeft: "auto" }}
+              >
+                Buy Ticket
+              </Button>
             </Box>
           </CardContent>
         </Card>

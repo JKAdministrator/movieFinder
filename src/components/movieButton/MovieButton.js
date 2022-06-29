@@ -1,40 +1,30 @@
-import * as React from "react";
-import { Card, CardMedia } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import React, { useCallback } from "react";
+import { useSelector } from "react-redux";
+import { useSearchParams } from "react-router-dom";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 export default function MovieButton({ movie }) {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const appState = useSelector((state) => {
-    return state;
+  const secure_base_url = useSelector((state) => {
+    return state?.movies?.config?.images?.secure_base_url;
   });
 
-  const imageSrc =
-    appState?.movies?.config?.images?.secure_base_url && movie.poster_path
-      ? `${appState?.movies?.config?.images?.secure_base_url}original${movie.poster_path}`
-      : "./noMovieImage".jpg;
+  //esta funcion siempre hace lo mismo por lo que no necesitamos rearmarla en cada rerender
+  const onClickCardHandler = useCallback(
+    (e) => {
+      searchParams.set("movieId", movie.id);
+      setSearchParams(searchParams);
+    },
+    [movie]
+  );
 
-  const onClickCardHandler = (e) => {
-    searchParams.set("movieId", movie.id);
-    setSearchParams(searchParams);
-  };
   return (
-    <Card
-      sx={{ maxWidth: 345 }}
+    <LazyLoadImage
+      alt={movie.name}
+      src={`${secure_base_url}original${movie.poster_path}`} // use normal <img> attributes as props
+      placeholderSrc="./posterPlaceholder.jpg"
+      effect="blur"
       onClick={onClickCardHandler}
       style={{ cursor: "pointer", minWidth: "100%", height: "100%" }}
-    >
-      <CardMedia
-        component="img"
-        height="80"
-        src={imageSrc}
-        onError={({ currentTarget }) => {
-          currentTarget.onerror = null; // para evitar un loop si incluso la imagen de error falla al cargarse
-          currentTarget.src = "./noMovieImage.jpg";
-        }}
-        alt={movie.name}
-      />
-    </Card>
+    />
   );
 }

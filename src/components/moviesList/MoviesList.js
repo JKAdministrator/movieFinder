@@ -5,16 +5,15 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Pagination } from "swiper";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import * as api from "../../api";
-// Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/free-mode";
 import "./style.css";
 
 import {
-  GENERE_POPULAR,
-  GENERE_SEARCH_RESULT,
-} from "../../constants/movieGenereTypes";
+  GENRE_POPULAR,
+  GENRE_SEARCH_RESULT,
+} from "../../constants/movieGenreTypes";
 import { useSearchParams } from "react-router-dom";
 function getSlidesPerView() {
   return Math.trunc(window.innerWidth / 250);
@@ -23,6 +22,7 @@ function getSlidesPerView() {
 export default function MoviesList({ genre, words }) {
   const [movieList, setMovieList] = useState(null);
   const [slidesPerView, setSlidesPerView] = useState(getSlidesPerView()); // la cantidad de slides por vista cambia en base al tamaño de pantalla
+  // eslint-disable-next-line
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchData, setSearchData] = useState({
     words: searchParams.get("words"),
@@ -36,13 +36,13 @@ export default function MoviesList({ genre, words }) {
       words: searchParams.get("words"),
       rating: searchParams.get("rating"),
     });
-    if (genre.id === GENERE_SEARCH_RESULT)
+    if (genre.id === GENRE_SEARCH_RESULT)
       setTitle(`Resuls for "${searchParams.get("words")}"`);
-  }, [searchParams]);
+  }, [genre.id, searchParams]);
 
   // si es el componente que muestra la busqueda debe volver a buscar ante un cambio en los datos
   useEffect(() => {
-    if (genre.id === GENERE_SEARCH_RESULT) {
+    if (genre.id === GENRE_SEARCH_RESULT) {
       if (searchData.words && searchData.words.length > 0) {
         api.fetchMoviesByWords(searchData.words).then((result) => {
           let moviesList = [...result.data.results];
@@ -60,19 +60,18 @@ export default function MoviesList({ genre, words }) {
         handleResize();
       }
     }
-  }, [searchData]);
+  }, [genre.id, searchData]);
 
   //cuando es un componente normal (busca por genero de pelicula) se realiza la busqueda solo al inicio
   useEffect(() => {
     switch (genre.id) {
-      case GENERE_POPULAR: {
+      case GENRE_POPULAR: {
         api.fetchMoviesByPopularity().then((result) => {
           setMovieList(result.data.results);
         });
-        setTitle(`Popular Movies`);
         break;
       }
-      case GENERE_SEARCH_RESULT: {
+      case GENRE_SEARCH_RESULT: {
         break;
       }
       default: {
@@ -95,41 +94,25 @@ export default function MoviesList({ genre, words }) {
 
   return (
     <>
-      {((genre.id === GENERE_SEARCH_RESULT &&
+      {((genre.id === GENRE_SEARCH_RESULT &&
         searchData.words &&
         searchData.words.length > 0) ||
-        (genre.id !== GENERE_SEARCH_RESULT &&
+        (genre.id !== GENRE_SEARCH_RESULT &&
           (!searchData.words || searchData.words.length === 0))) && (
-        <Box
-          style={{
-            display: "flex",
-            flexFlow: "column",
-            height: "max-content",
-            minHeight: "16rem",
-          }}
-        >
-          <Box
-            style={{
-              display: "flex",
-              flexFlow: "row",
-              alignItems: "flex-end",
-              justifyContent: "space-between",
-            }}
-          >
+        <Box className="movielistColumn">
+          <Box className="movielistRow">
             <Typography
               gutterBottom
               variant="h4"
               component="h3"
+              className="movieListTitle"
               style={{
-                textAlign: "left",
-                padding: "1rem",
-                margin: "0px",
-                color: "#e5e5e5",
+                marginTop: genre.id === GENRE_SEARCH_RESULT ? "4rem" : "0rem",
               }}
             >
-              {title}
+              {genre.id === GENRE_POPULAR ? "Popular Movies" : title}
             </Typography>
-            {genre.id !== GENERE_SEARCH_RESULT && (
+            {genre.id !== GENRE_SEARCH_RESULT && (
               <Button>
                 More
                 <NavigateNextIcon />
@@ -172,12 +155,7 @@ export default function MoviesList({ genre, words }) {
                 gutterBottom
                 variant="body1"
                 component="div"
-                style={{
-                  textAlign: "left",
-                  padding: "1rem",
-                  margin: "0px",
-                  color: "white",
-                }}
+                className="movielistSubtitle"
               >
                 The search returned no matches. You can try the following:
               </Typography>
@@ -191,8 +169,8 @@ export default function MoviesList({ genre, words }) {
           {!movieList && (
             <Skeleton
               variant="rectangular"
-              style={{ width: "100%" }}
-              height={"12.5rem"}
+              className="movielistSkeleton"
+              height="12.5rem"
             />
           )}
         </Box>

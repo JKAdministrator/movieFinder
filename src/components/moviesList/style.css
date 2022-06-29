@@ -40,3 +40,32 @@ ul.suggest > li {
 .swiper-pagination-bullet {
   background: whitesmoke;
 }
+
+.movieListTitle {
+  text-align: left;
+  padding: 1rem 1rem 0rem 1rem;
+  margin: 0px;
+  color: #e5e5e5;
+}
+.movielistSubtitle {
+  text-align: left;
+  padding: 1rem;
+  margin: 0px;
+  color: white;
+}
+.movielistSkeleton {
+  width: 100%;
+}
+.movielistColumn {
+  display: flex;
+  flex-flow: column;
+  height: max-content;
+  min-height: 16rem;
+}
+
+.movielistRow {
+  display: flex;
+  flex-flow: row;
+  align-items: flex-end;
+  justify-content: space-between;
+}

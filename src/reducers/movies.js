@@ -21,9 +21,6 @@ export default (
       };
     }
     case FETCH_MOVIES_API_CONFIG: {
-      console.log("FETCH_MOVIES_API_CONFIG adding payload to state", {
-        payload: action.payload,
-      });
       return { ...moviesData, config: action.payload };
     }
     case FETCH_MOVIE_DATA: {

@@ -1,0 +1,86 @@
+.recomended {
+  position: relative;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  height: 70vh;
+  width: 100%;
+  color: #ffffffe0;
+}
+.recomended .box1 {
+  position: relative;
+  background-color: black;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 0;
+  background-size: cover;
+  background-attachment: fixed; /*Parallax Scrolling Effect for the recomended movie*/
+}
+.recomended .box2 {
+  width: 100%;
+  display: flex;
+  flex-flow: column;
+  width: 100%;
+  height: 100%;
+  background: rgb(2, 0, 36);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  background: rgb(0, 0, 0);
+  background: linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(5, 5, 5, 1) 24%,
+    rgba(255, 255, 255, 0) 100%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+.recomended .box3 {
+  min-width: 40%;
+  display: flex;
+  flex-flow: column;
+  height: max-content;
+  position: absolute;
+  bottom: 1rem;
+  left: 0px;
+  z-index: 2;
+  color: #f5f5f5a3;
+  max-width: 50%;
+  text-align: justify;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.recomended .title {
+  text-align: center;
+  font-weight: bold;
+}
+@media (max-width: 800px) {
+  .recomended .overview {
+    display: none;
+    visibility: hidden;
+  }
+  .recomended .box3 {
+    min-width: calc(100% - 2rem);
+    padding: 1rem;
+  }
+}
+@media (max-width: 500px) {
+  .recomended .box3 {
+    min-width: calc(100% - 1rem);
+    padding: 0.5rem;
+    bottom: 0.5rem;
+  }
+}
+.recomended .box4 {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+}
