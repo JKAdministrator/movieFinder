@@ -1,4 +1,4 @@
-svg {
+.svganimLoading svg {
   position: absolute;
   width: 240px;
   height: 120px;
@@ -9,17 +9,17 @@ svg {
   margin: auto;
 }
 
-svg #plug,
-svg #socket {
+.svganimLoading svg #plug,
+.svganimLoading svg #socket {
   fill: #fdb515;
 }
 
-svg #loop-normal {
+.svganimLoading svg #loop-normal {
   fill: none;
   stroke: #fdb515;
   stroke-width: 12;
 }
 
-svg #loop-offset {
+.svganimLoading svg #loop-offset {
   display: none;
 }
