@@ -19,10 +19,14 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import { getMovieData, removeMovieData } from "../../actions/movies";
 import "./style.css";
-import SvganimLoading from "../svganimLoading/SvganimLoading";
+
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
+const onCardMediaError = (e) => {
+  e.target.onerror = null;
+  e.target.src = "./backdropPlaceholder.jpg";
+};
 
 export default function DetailDialog({ isOpen }) {
   const dispatch = useDispatch();
@@ -103,11 +107,8 @@ export default function DetailDialog({ isOpen }) {
             height="280"
             image={`${secure_base_url}original/${movieData.backdrop_path}`}
             alt="Movie Image"
-            onError={({ currentTarget }) => {
-              currentTarget.onerror = null; // para evitar un loop si incluso la imagen de error falla al cargarse
-              currentTarget.src = "./backdropPlaceholder.jpg";
-            }}
-          />
+            onError={onCardMediaError}
+          ></CardMedia>
           <CardContent className="detaildialogCardcontent">
             <Typography gutterBottom variant="h4" component="div">
               {movieData?.title}
