@@ -64,4 +64,4 @@ No, feel free to create the user interface as you wish. We only care about the c
 - Interface design is similar to Netflix, with carousels to display movie listings
 - The interface was designed to prioritize mobile over desktop
 - The API version 3 from ww.themoviedb.org was used to simplify access. If you want to run the app locally, you should create an .env in the "src" folder with the environment variable "REACT_APP_API_KEY". This should have as value the access token belonging to a user who can execute queries on the api.
-- The app can be tested online on https://voluble-genie-f46638.netlify.app
+- The app can be tested online on https://cinemas-jk.netlify.app/
