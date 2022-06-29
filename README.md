@@ -1,12 +1,16 @@
-# About the project
+# CINEMA APP
+
+URL : https://cinemas-jk.netlify.app/
+
+## About the project
 
 This project was created by request of a work proposal.
 
-# Purpose of the application
+## Purpose of the application
 
 Your local movie theater is in dire need of attracting a new audience. To do this, they ask you to create a simple web application that allows users to discover new movies and search for them. Since they don't have a back-end service, the first version of the app will be built using the public API: https://developers.themoviedb.org/3 (FAQ: https://www.themoviedb.org/documentation/api)
 
-# Features that the application must have
+## Features that the application must have
 
 ### Discover
 
@@ -28,22 +32,22 @@ The rating is a value between 0 and 10. Add a five-star rating filter (like http
 
 When clicked, a detailed view should be displayed, showing more information about the movie.
 
-# App Design
+## App Design
 
 We do not require amazing designs. A clean and minimal user interface will do. We want to see the movie images provided by the API. (look at https://dribbble.com/shots/1682568-Flixus-Homepage-WIP/attachments/266476 as a design suggestion, but you decide)
 
-# Development requirements
+## Development requirements
 
 - Use `create-react-app` for this project
 - Use the latest version of React
 - Provide all the necessary steps to launch the application
 
-# Deliverables
+## Deliverables
 
 - The codebase for the project was delivered in some way (your choice, preferably on github.com).
 - Anything else you think is important to understand the app.
 
-# Frequently Asked Questions
+## Frequently Asked Questions
 
 **Do I need to add tests?**
 No.
@@ -58,14 +62,13 @@ There are no restrictions here, show us what you know. We love React and we love
 No, feel free to create the user interface as you wish. We only care about the code.
 
 
-# Project Considerations
+## Project Considerations
 
-- Redux (react-redux) was used to maintain application state (mainly UI state) to avoid unnecessary prop-drilling
-- react-router-dom was used to enable query strings in the web url so that users can copy and paste the page they are on, keeping the state of the app while doing so. This does not mean that they will always have the same results since in the case of searches the results depend on the api endpoint. 
-- Interface design is similar to Netflix but designed to prioritize mobile over desktop
 - The API version 3 from ww.themoviedb.org was used to simplify access. If you want to run the app locally, you should create an .env in the "src" folder with the environment variable "REACT_APP_API_KEY". This should have as value the access token belonging to a user who can execute queries on the api.
-- The app can be tested online on https://cinemas-jk.netlify.app/
+- Redux (react-redux) was used to maintain application state (mainly UI state)
+- react-router-dom was used to enable query strings in the web url so that users can copy and paste the page they are on, keeping the state of the app while doing so. This does not mean that they will always have the same results since in the case of searches the results depend on the api endpoint. 
+- Interface design is similar to Netflix and designed to prioritize mobile over desktop
 - It is a PWA so it can be installed on PC/tablets/cell phones to function as a native-like app. However it is not taking advantage of having the service worker.
 - A debounce functionality is not implemented on the search due to lack of time. It had problems with the searchParams of react-router-dom but it is a potential improvement in the future
 - The score filter (stars) is applied on the search, not on what the "homepage" results would be. It can be unintuitive especially because when selecting the stars it seems like you are choosing a minimum of stars when in fact just a value is selected. It would be more intuitive in the future to change the filter to a dropdown like input or to have it work as a "minimum" of score to filter
-- 
+- Styles of the app were armed with MUI + css because the design is not the objective of the app. In a larger project it is recommended to change it to styled components or a similar library 
