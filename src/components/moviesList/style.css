@@ -69,3 +69,14 @@ ul.suggest > li {
   align-items: flex-end;
   justify-content: space-between;
 }
+.movielistCancelButton {
+  background-color: #1e1e1e;
+  color: white;
+}
+.movielistTitleBox {
+  display: flex;
+  flex-flow: row;
+  align-items: baseline;
+  justify-content: flex-start;
+  width: max-content;
+}

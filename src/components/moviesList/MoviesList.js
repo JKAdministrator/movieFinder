@@ -1,4 +1,11 @@
-import { Box, Button, Skeleton, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Fab,
+  IconButton,
+  Skeleton,
+  Typography,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import MovieButton from "../movieButton/MovieButton";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -14,12 +21,14 @@ import {
   GENRE_POPULAR,
   GENRE_SEARCH_RESULT,
 } from "../../constants/movieGenreTypes";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import CloseIcon from "@mui/icons-material/Close";
 function getSlidesPerView() {
   return Math.trunc(window.innerWidth / 250);
 }
 
 export default function MoviesList({ genre, words }) {
+  const navigate = useNavigate("/");
   const [movieList, setMovieList] = useState(null);
   const [slidesPerView, setSlidesPerView] = useState(getSlidesPerView()); // la cantidad de slides por vista cambia en base al tamaño de pantalla
   // eslint-disable-next-line
@@ -91,6 +100,9 @@ export default function MoviesList({ genre, words }) {
   const handleResize = (e) => {
     setSlidesPerView(getSlidesPerView());
   };
+  const handleClose = () => {
+    navigate("/");
+  };
 
   return (
     <>
@@ -101,17 +113,33 @@ export default function MoviesList({ genre, words }) {
           (!searchData.words || searchData.words.length === 0))) && (
         <Box className="movielistColumn">
           <Box className="movielistRow">
-            <Typography
-              gutterBottom
-              variant="h4"
-              component="h3"
-              className="movieListTitle"
+            <Box
+              className="movielistTitleBox"
               style={{
                 marginTop: genre.id === GENRE_SEARCH_RESULT ? "4rem" : "0rem",
               }}
             >
-              {genre.id === GENRE_POPULAR ? "Popular Movies" : title}
-            </Typography>
+              <Typography
+                gutterBottom
+                variant="h4"
+                component="h3"
+                className="movieListTitle"
+              >
+                {genre.id === GENRE_POPULAR ? "Popular Movies" : title}
+              </Typography>
+              {genre.id === GENRE_SEARCH_RESULT && (
+                <IconButton
+                  color="primary"
+                  aria-label="cancel search"
+                  component="span"
+                  className="movielistCancelButton"
+                  onClick={handleClose}
+                >
+                  <CloseIcon />
+                </IconButton>
+              )}
+            </Box>
+
             {genre.id !== GENRE_SEARCH_RESULT && (
               <Button>
                 More
