@@ -68,4 +68,4 @@ No, feel free to create the user interface as you wish. We only care about the c
 - It is a PWA so it can be installed on PC/tablets/cell phones to function as a native-like app. However it is not taking advantage of having the service worker.
 - A debounce functionality is not implemented on the search due to lack of time. It had problems with the searchParams of react-router-dom but it is a potential improvement in the future
 - The score filter (stars) is applied on the search, not on what the "homepage" results would be. It can be unintuitive especially because when selecting the stars it seems like you are choosing a minimum of stars when in fact just a value is selected. It would be more intuitive in the future to change the filter to a dropdown like input or to have it work as a "minimum" of score to filter
-- 
+- Styles of the app were armed with MUI + css because the design is not the objective of the app. In a larger project it is recommended to change it to styled components or a similar library 
