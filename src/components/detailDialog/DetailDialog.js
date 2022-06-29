@@ -19,6 +19,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import { getMovieData, removeMovieData } from "../../actions/movies";
 import "./style.css";
+import SvganimLoading from "../svganimLoading/SvganimLoading";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -78,6 +79,7 @@ export default function DetailDialog({ isOpen }) {
           backgroundColor: "transparent",
           boxShadow: "none",
           overflow: "hidden",
+          background: movieData ? "none" : "unset",
         },
       }}
     >
@@ -85,6 +87,7 @@ export default function DetailDialog({ isOpen }) {
         <Card
           style={{
             height: "100%",
+            overflow: "auto",
           }}
         >
           <Fab
@@ -149,7 +152,9 @@ export default function DetailDialog({ isOpen }) {
           </CardContent>
         </Card>
       ) : (
-        <CircularProgress />
+        <Box className="detaildialogLoadingbox">
+          <CircularProgress />
+        </Box>
       )}
     </Dialog>
   );

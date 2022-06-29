@@ -1,5 +1,5 @@
 .detaildialogCloseButton {
-  position: absolute;
+  position: absolute !important;
   top: 1rem;
   right: 1rem;
   background-color: #1e1e1e;
@@ -19,4 +19,11 @@
   justify-content: flex-start;
   gap: 1rem;
   width: 100%;
+}
+.detaildialogLoadingbox {
+  align-items: center;
+  height: 100%;
+  justify-content: center;
+  display: flex;
+  flex-flow: column;
 }
