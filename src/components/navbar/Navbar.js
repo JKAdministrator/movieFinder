@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import { styled, alpha } from "@mui/material/styles";
 import {
   Stack,
@@ -59,6 +59,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function Navbar() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+  const [isPending, startTransition] = useTransition();
   const [searchWords, setSearchWords] = useState(
     searchParams.get("words") ? searchParams.get("words") : ""
   );
@@ -67,13 +68,16 @@ export default function Navbar() {
     searchParams.has("words")
       ? setSearchWords(searchParams.get("words"))
       : setSearchWords("");
-  }, [searchParams]);
+  }, []);
 
   const onSearchChangeHandler = (e) => {
-    e?.target?.value
-      ? searchParams.set("words", e.target.value)
-      : searchParams.delete("words");
-    setSearchParams(searchParams);
+    const words = e?.target?.value;
+    startTransition(() => {
+      //la actualizacion de los parametros de busqueda tiene menor prioridad
+      words ? searchParams.set("words", words) : searchParams.delete("words");
+      setSearchParams(searchParams);
+    });
+    setSearchWords(words);
   };
 
   const onClickFilterButtonHandler = (e) => {

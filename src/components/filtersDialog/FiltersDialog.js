@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import {
   Button,
   Dialog,
@@ -22,6 +22,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function FiltersDialog() {
   const theme = useTheme();
+  const [isPending, startTransition] = useTransition();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const [searchParams, setSearchParams] = useSearchParams();
   const [showFilters, setShowFilters] = useState(false);
@@ -38,21 +39,25 @@ export default function FiltersDialog() {
   }, [searchParams]);
 
   const handleSave = () => {
-    ratingValueNew > 0
-      ? searchParams.set("rating", ratingValueNew)
-      : searchParams.delete("rating");
-    searchParams.delete("showFilters");
-    setSearchParams(searchParams);
+    startTransition(() => {
+      ratingValueNew > 0
+        ? searchParams.set("rating", ratingValueNew)
+        : searchParams.delete("rating");
+      searchParams.delete("showFilters");
+      setSearchParams(searchParams);
+    });
     setShowFilters(false);
     setRatingValue(ratingValueNew);
   };
 
   const handleCancel = () => {
-    ratingValue > 0
-      ? searchParams.set("rating", ratingValue)
-      : searchParams.delete("rating");
-    searchParams.delete("showFilters");
-    setSearchParams(searchParams);
+    startTransition(() => {
+      ratingValue > 0
+        ? searchParams.set("rating", ratingValue)
+        : searchParams.delete("rating");
+      searchParams.delete("showFilters");
+      setSearchParams(searchParams);
+    });
     setShowFilters(false);
     setRatingValueNew(ratingValue);
   };
