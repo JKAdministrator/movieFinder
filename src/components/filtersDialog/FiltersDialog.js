@@ -62,6 +62,7 @@ export default function FiltersDialog() {
     setRatingValueNew(ratingValue);
   };
 
+  const valueOfStars = Math.round(ratingValueNew ? ratingValueNew : 0 / 2);
   return (
     <Dialog
       fullScreen={fullScreen}
@@ -93,7 +94,9 @@ export default function FiltersDialog() {
             justifyContent: "space-between",
           }}
         >
-          <Typography component="legend">Raiting</Typography>
+          <Typography component="legend">
+            Raiting ({valueOfStars * 2 - 2} - {valueOfStars * 2})
+          </Typography>
           <Rating
             name="simple-controlled"
             value={ratingValueNew}

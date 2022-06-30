@@ -58,7 +58,10 @@ export default function MoviesList({ genre, words }) {
           const rating = searchData.rating;
           if (rating) {
             let filteredMoviesList = moviesList.filter((m) => {
-              return Math.round(m.vote_average / 2) === Number(rating);
+              return (
+                m.vote_average >= Number(rating) * 2 - 2 &&
+                m.vote_average <= Number(rating) * 2
+              );
             });
             setMovieList(filteredMoviesList);
           } else setMovieList(moviesList);
