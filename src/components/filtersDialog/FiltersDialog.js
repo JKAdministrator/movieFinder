@@ -25,52 +25,69 @@ export default function FiltersDialog() {
   const [isPending, startTransition] = useTransition();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const [searchParams, setSearchParams] = useSearchParams();
-  const [showFilters, setShowFilters] = useState(false);
 
-  const [ratingValue, setRatingValue] = useState(
-    searchParams.get("rating") ? Number(searchParams.get("rating")) : 0
-  );
-  const [ratingValueNew, setRatingValueNew] = useState(
-    searchParams.get("rating") ? Number(searchParams.get("rating")) : 0
-  );
-
-  useEffect(() => {
-    setShowFilters(searchParams.has("showFilters"));
-  }, [searchParams]);
+  const [filtersState, setFiltersState] = useState({
+    currentRating: searchParams.get("rating")
+      ? Number(searchParams.get("rating"))
+      : 0,
+    newRating: searchParams.get("rating")
+      ? Number(searchParams.get("rating"))
+      : 0,
+    show: false,
+  });
 
   useEffect(() => {
     const rating = searchParams.get("rating")
       ? Number(searchParams.get("rating"))
       : 0;
-    setRatingValue(rating);
-    setRatingValueNew(rating);
+    setFiltersState((_prev) => {
+      return {
+        ..._prev,
+        show: searchParams.has("showFilters"),
+        currentRating: rating,
+        newRating: rating,
+      };
+    });
   }, [searchParams]);
 
   const handleSave = () => {
-    startTransition(() => {
-      ratingValueNew > 0
-        ? searchParams.set("rating", ratingValueNew)
-        : searchParams.delete("rating");
-      searchParams.delete("showFilters");
-      setSearchParams(searchParams);
+    setFiltersState((_prev) => {
+      startTransition(() => {
+        _prev.newRating > 0
+          ? searchParams.set("rating", _prev.newRating)
+          : searchParams.delete("rating");
+        searchParams.delete("showFilters");
+        setSearchParams(searchParams);
+      });
+      return {
+        ..._prev,
+        show: false,
+        currentRating: _prev.newRating,
+      };
     });
-    setShowFilters(false);
-    setRatingValue(ratingValueNew);
   };
 
   const handleCancel = () => {
-    startTransition(() => {
-      ratingValue > 0
-        ? searchParams.set("rating", ratingValue)
-        : searchParams.delete("rating");
-      searchParams.delete("showFilters");
-      setSearchParams(searchParams);
+    setFiltersState((_prev) => {
+      startTransition(() => {
+        _prev.currentRating > 0
+          ? searchParams.set("rating", _prev.currentRating)
+          : searchParams.delete("rating");
+        searchParams.delete("showFilters");
+        setSearchParams(searchParams);
+      });
+
+      return {
+        ..._prev,
+        show: false,
+        newRating: _prev.currentRating,
+      };
     });
-    setShowFilters(false);
-    setRatingValueNew(ratingValue);
   };
 
-  const valueOfStars = Math.round(ratingValueNew ? ratingValueNew : 0 / 2);
+  const valueOfStars = Math.round(
+    filtersState.newRating ? filtersState.newRating : 0 / 2
+  );
   const valueOfStarsString =
     valueOfStars > 0
       ? "(" + (valueOfStars * 2 - 2) + "-" + valueOfStars * 2 + ")"
@@ -78,7 +95,7 @@ export default function FiltersDialog() {
   return (
     <Dialog
       fullScreen={fullScreen}
-      open={showFilters}
+      open={filtersState.show}
       TransitionComponent={Transition}
     >
       <AppBar sx={{ position: "relative" }}>
@@ -111,10 +128,15 @@ export default function FiltersDialog() {
           </Typography>
           <Rating
             name="simple-controlled"
-            value={ratingValueNew}
+            value={filtersState.newRating}
             precision={1}
             onChange={(event, newValue) => {
-              setRatingValueNew(newValue);
+              setFiltersState((_prev) => {
+                return {
+                  ..._prev,
+                  newRating: newValue,
+                };
+              });
             }}
           />
         </ListItem>
