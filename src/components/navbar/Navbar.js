@@ -68,7 +68,7 @@ export default function Navbar() {
     searchParams.has("words")
       ? setSearchWords(searchParams.get("words"))
       : setSearchWords("");
-  }, []);
+  }, [searchParams]);
 
   const onSearchChangeHandler = (e) => {
     const words = e?.target?.value;
