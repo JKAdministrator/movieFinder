@@ -38,6 +38,14 @@ export default function FiltersDialog() {
     setShowFilters(searchParams.has("showFilters"));
   }, [searchParams]);
 
+  useEffect(() => {
+    const rating = searchParams.get("rating")
+      ? Number(searchParams.get("rating"))
+      : 0;
+    setRatingValue(rating);
+    setRatingValueNew(rating);
+  }, [searchParams]);
+
   const handleSave = () => {
     startTransition(() => {
       ratingValueNew > 0
