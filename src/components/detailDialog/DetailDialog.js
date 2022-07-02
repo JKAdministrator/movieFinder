@@ -105,7 +105,7 @@ export default function DetailDialog({ isOpen }) {
           <CardMedia
             component="img"
             height="280"
-            image={`${secure_base_url}original/${movieData.backdrop_path}`}
+            image={`${secure_base_url}w780${movieData.backdrop_path}`}
             alt="Movie Image"
             onError={onCardMediaError}
           ></CardMedia>

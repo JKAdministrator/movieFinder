@@ -21,7 +21,7 @@ export default function Recomended() {
   useEffect(() => {
     api.fetchTrendingMovies().then((result) => {
       const randomItem = _.sample(result.data.results);
-      const imageSrc = `${secure_base_url}original/${randomItem.backdrop_path}`;
+      const imageSrc = `${secure_base_url}original${randomItem.backdrop_path}`;
       const newData = {
         title: randomItem.title ? randomItem.title : randomItem.name,
         overview: randomItem.overview,

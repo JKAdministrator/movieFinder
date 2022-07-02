@@ -1,11 +1,4 @@
-import {
-  Box,
-  Button,
-  Fab,
-  IconButton,
-  Skeleton,
-  Typography,
-} from "@mui/material";
+import { Box, Button, IconButton, Skeleton, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import MovieButton from "../movieButton/MovieButton";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -23,6 +16,7 @@ import {
 } from "../../constants/movieGenreTypes";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import CloseIcon from "@mui/icons-material/Close";
+import { useSelector } from "react-redux";
 function getSlidesPerView() {
   return Math.trunc(window.innerWidth / 250);
 }
@@ -38,6 +32,12 @@ export default function MoviesList({ genre, words }) {
     rating: searchParams.get("rating"),
   });
   const [title, setTitle] = useState("");
+  const stateData = useSelector((state) => {
+    return {
+      poster_sizes: state?.movies?.config?.images?.poster_sizes,
+      secure_base_url: state?.movies?.config?.images?.secure_base_url,
+    };
+  });
 
   //obtiene los datos del query cada vez que se actualiza
   useEffect(() => {
@@ -58,10 +58,10 @@ export default function MoviesList({ genre, words }) {
           const rating = searchData.rating;
           if (rating) {
             let filteredMoviesList = moviesList.filter((m) => {
-              return (
+              const showMovie =
                 m.vote_average >= Number(rating) * 2 - 2 &&
-                m.vote_average <= Number(rating) * 2
-              );
+                m.vote_average <= Number(rating) * 2;
+              return showMovie;
             });
             setMovieList(filteredMoviesList);
           } else setMovieList(moviesList);
@@ -105,6 +105,11 @@ export default function MoviesList({ genre, words }) {
   };
   const handleClose = () => {
     navigate("/");
+  };
+
+  const onMovieClickHandler = (e) => {
+    searchParams.set("movieId", e.target.dataset.movieId);
+    setSearchParams(searchParams);
   };
 
   return (
@@ -175,7 +180,12 @@ export default function MoviesList({ genre, words }) {
                     key={genre.id.toString() + `-` + movie.id.toString()}
                     style={{ height: "auto" }}
                   >
-                    <MovieButton movie={movie} />
+                    <MovieButton
+                      movie={movie}
+                      posterSizes={stateData.poster_sizes}
+                      secureBaseUrl={stateData.secure_base_url}
+                      clickHandler={onMovieClickHandler}
+                    />
                   </SwiperSlide>
                 );
               })}

@@ -27,7 +27,11 @@ export default (
       return { ...moviesData, selectedMovieData: action.payload };
     }
     case REMOVE_MOVIE_DATA: {
-      return { ...moviesData, selectedMovieData: undefined };
+      return {
+        ...moviesData,
+        selectedMovieData: undefined,
+        movieDataError: undefined,
+      };
     }
 
     default: {

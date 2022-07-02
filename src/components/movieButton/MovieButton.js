@@ -1,30 +1,14 @@
-import React, { useCallback, useState } from "react";
-import { useSelector } from "react-redux";
-import { useSearchParams } from "react-router-dom";
+import React, { useState } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Box, Typography } from "@mui/material";
 
-export default function MovieButton({ movie }) {
-  const [searchParams, setSearchParams] = useSearchParams();
+export default function MovieButton({ movie, secureBaseUrl, clickHandler }) {
   const [hasError, setHasError] = useState(false);
-  const secure_base_url = useSelector((state) => {
-    return state?.movies?.config?.images?.secure_base_url;
-  });
-
-  //esta funcion siempre hace lo mismo por lo que no necesitamos rearmarla en cada rerender
-  const onClickCardHandler = useCallback(
-    (e) => {
-      searchParams.set("movieId", movie.id);
-      setSearchParams(searchParams);
-    },
-    [movie]
-  );
-
-  const onMediaError = useCallback((e) => {
+  const onMediaError = (e) => {
     e.target.onerror = null;
     e.target.src = "./backdropPlaceholder.jpg";
     setHasError(true);
-  }, []);
+  };
 
   return (
     <Box
@@ -50,17 +34,18 @@ export default function MovieButton({ movie }) {
       </Typography>
       <LazyLoadImage
         alt={movie.name}
-        src={`${secure_base_url}original${movie.poster_path}`} // use normal <img> attributes as props
+        src={`${secureBaseUrl}w500${movie.poster_path}`} // use normal <img> attributes as props
         placeholderSrc="./posterPlaceholder.jpg"
         effect="blur"
         height={"100%"}
-        onClick={onClickCardHandler}
+        onClick={clickHandler}
         style={{
           cursor: "pointer",
           minWidth: "100%",
           minHeight: "100%",
           height: "100%",
         }}
+        data-movie-id={movie.id}
         onError={onMediaError}
       />
     </Box>
