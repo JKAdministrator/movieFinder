@@ -41,35 +41,35 @@ ul.suggest > li {
   background: whitesmoke;
 }
 
-.movieListTitle {
+.movieSearchTitle {
   text-align: left;
   padding: 1rem 1rem 0rem 1rem;
   margin: 0px;
   color: #e5e5e5;
 }
-.movielistSubtitle {
+.movieSearchSubtitle {
   text-align: left;
   padding: 1rem;
   margin: 0px;
   color: white;
 }
-.movielistSkeleton {
+.movieSearchSkeleton {
   width: 100%;
 }
-.movielistColumn {
+.movieSearchColumn {
   display: flex;
   flex-flow: column;
   height: max-content;
   min-height: 16rem;
 }
 
-.movielistRow {
+.movieSearchRow {
   display: flex;
   flex-flow: row;
   align-items: flex-end;
   justify-content: space-between;
 }
-.movielistRow.isGrid {
+.movieSearchRow.isGrid {
   position: fixed;
   top: 0rem;
   width: calc(100% - 2rem);
@@ -79,11 +79,11 @@ ul.suggest > li {
   padding: 1rem;
 }
 
-.movielistCancelButton {
+.movieSearchCancelButton {
   background-color: #1e1e1e;
   color: white;
 }
-.movielistTitleBox {
+.movieSearchTitleBox {
   display: flex;
   flex-flow: row;
   align-items: baseline;

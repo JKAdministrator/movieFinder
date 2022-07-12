@@ -9,7 +9,9 @@ import Recomended from "../recomended/Recomended";
 import * as api from "../../api";
 import _ from "lodash";
 import "./style.css";
+import MoviesSearch from "../movieSearch/moviesearch";
 
+import { useSearchParams } from "react-router-dom";
 function selectRandomGenres(genres, quantity = 5) {
   let randomGenres = [];
   for (let i = 0; i < quantity; i++) {
@@ -35,6 +37,10 @@ export default function Homepage() {
       });
     });
   }, []);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const hasWords = searchParams.has("words");
+
+  if (!hasWords) window.scrollTo(0, 0);
 
   return (
     <Box
@@ -50,12 +56,7 @@ export default function Homepage() {
           {randomGenres.map((g) => {
             return <MoviesList key={g.id} genre={g} />;
           })}
-          <MoviesList
-            key={-2}
-            genre={{
-              id: -2,
-            }}
-          />
+          <MoviesSearch />
         </Box>
         <DetailDialog />
         <FiltersDialog />

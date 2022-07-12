@@ -22,8 +22,8 @@ export const fetchMoviesByPopularity = (genre) => {
     headers: { Authorization: `Bearer ${process.env.REACT_APP_API_KEY}` },
   });
 };
-export const fetchMoviesByWords = (words = "") => {
-  return API.get(`/search/movie?query=${words}`, {
+export const fetchMoviesByWords = (words = "", page = 1) => {
+  return API.get(`/search/movie?query=${words}&page=${page}`, {
     headers: { Authorization: `Bearer ${process.env.REACT_APP_API_KEY}` },
   });
 };
