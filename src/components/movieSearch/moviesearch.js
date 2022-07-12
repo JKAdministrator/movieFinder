@@ -145,15 +145,21 @@ export default function MoviesSearch() {
     const observer = new IntersectionObserver(
       (entries) => {
         const entry = entries[0];
-        setSearchData((_prevSearchData) => {
-          return {
-            ..._prevSearchData,
-            currentPage: _prevSearchData.currentPage + 1,
-            hasToLoadCurrentPage: true,
-            isLoading: true,
-            canTryNextSearch: false,
-          };
-        });
+        console.log("endign reached ", searchData);
+        if (
+          entry.isIntersecting &&
+          !searchData.isLoading &&
+          searchData.canTryNextSearch
+        )
+          setSearchData((_prevSearchData) => {
+            return {
+              ..._prevSearchData,
+              currentPage: _prevSearchData.currentPage + 1,
+              hasToLoadCurrentPage: true,
+              isLoading: true,
+              canTryNextSearch: false,
+            };
+          });
       },
       { threshold: 0.25, rootMargin: "50px" }
     );
