@@ -1,0 +1,20 @@
+.backgroundImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  position: absolute;
+}
+.logo {
+  width: 10rem;
+  height: 4rem;
+  padding: 0px;
+  margin: 0px;
+  pointer-events: all;
+  cursor: pointer;
+}
+.logo img {
+  object-fit: scale-down;
+  object-position: center;
+  width: 100%;
+}

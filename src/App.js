@@ -35,6 +35,7 @@ function App() {
   //los componentes se cargan solo cuando son necesarios
   const NotFound = lazy(() => import("./components/notFound/NotFound.js"));
   const Homepage = lazy(() => import("./components/homepage/Homepage.js"));
+  const LoginPage = lazy(() => import("./components/loginpage/Loginpage.js"));
 
   return (
     <>
@@ -74,6 +75,30 @@ function App() {
                       }
                     >
                       <Homepage />
+                    </Suspense>
+                  )}
+                </>
+              }
+            />
+            <Route
+              path="/login"
+              exact
+              element={
+                <>
+                  {!isReady && (
+                    <Box className="loadingappBox">
+                      <SvganimLoading />
+                    </Box>
+                  )}
+                  {isReady && (
+                    <Suspense
+                      fallback={
+                        <Box className="loadingappBox">
+                          <SvganimLoading />
+                        </Box>
+                      }
+                    >
+                      <LoginPage />
                     </Suspense>
                   )}
                 </>
