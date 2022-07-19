@@ -1,42 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Typography,
   Box,
   Button,
-  FormControl,
-  InputLabel,
-  OutlinedInput,
-  InputAdornment,
-  IconButton,
   TextField,
   Paper,
   AppBar,
 } from "@mui/material";
 import "./style.css";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useNavigate } from "react-router-dom";
-export default function LoginPage() {
+export default function RecoverPage() {
   const navigate = useNavigate();
-  const [values, setValues] = useState({
-    password: "",
-    showPassword: false,
-  });
-
-  const handleClickShowPassword = () => {
-    setValues({
-      ...values,
-      showPassword: !values.showPassword,
-    });
-  };
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
-  const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
-
   return (
     <>
       <Box
@@ -104,7 +78,7 @@ export default function LoginPage() {
               component="h1"
               style={{ marginBottom: "1rem" }}
             >
-              Login
+              Recover
             </Typography>
             <TextField
               id="email"
@@ -113,35 +87,6 @@ export default function LoginPage() {
               variant="outlined"
               style={{ width: "100%" }}
             />
-            <FormControl
-              sx={{ m: 1, width: "25ch" }}
-              variant="outlined"
-              style={{
-                margin: "0px",
-                width: "100%",
-              }}
-            >
-              <InputLabel htmlFor="password">Password</InputLabel>
-              <OutlinedInput
-                id="password"
-                type={values.showPassword ? "text" : "password"}
-                value={values.password}
-                onChange={handleChange("password")}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      edge="end"
-                    >
-                      {values.showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-                label="Password"
-              />
-            </FormControl>
             <Button
               variant="contained"
               style={{
@@ -149,14 +94,14 @@ export default function LoginPage() {
                 width: "100%",
               }}
             >
-              Login
+              RECOVER USER
             </Button>
             <Box
               style={{
                 display: "flex",
                 flexFlow: "row",
                 alignItems: "center",
-                justifyContent: "space-between",
+                justifyContent: "flex-end",
                 width: "100%",
               }}
             >
@@ -167,22 +112,10 @@ export default function LoginPage() {
                   color: "grey",
                 }}
                 onClick={(e) => {
-                  navigate("/recover");
+                  navigate("/login");
                 }}
               >
-                Forgot Password?
-              </Button>
-              <Button
-                size="small"
-                color="secondary"
-                style={{
-                  color: "grey",
-                }}
-                onClick={(e) => {
-                  navigate("/signup");
-                }}
-              >
-                New user?
+                Have a user?
               </Button>
             </Box>
           </Box>

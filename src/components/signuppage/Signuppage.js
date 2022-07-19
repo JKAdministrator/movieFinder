@@ -16,17 +16,26 @@ import "./style.css";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useNavigate } from "react-router-dom";
-export default function LoginPage() {
+export default function SignupPage() {
   const navigate = useNavigate();
+
   const [values, setValues] = useState({
     password: "",
+    password2: "",
     showPassword: false,
+    showPassword2: false,
   });
 
   const handleClickShowPassword = () => {
     setValues({
       ...values,
       showPassword: !values.showPassword,
+    });
+  };
+  const handleClickShowPassword2 = () => {
+    setValues({
+      ...values,
+      showPassword2: !values.showPassword2,
     });
   };
 
@@ -104,7 +113,7 @@ export default function LoginPage() {
               component="h1"
               style={{ marginBottom: "1rem" }}
             >
-              Login
+              Recover
             </Typography>
             <TextField
               id="email"
@@ -142,6 +151,39 @@ export default function LoginPage() {
                 label="Password"
               />
             </FormControl>
+            <FormControl
+              sx={{ m: 1, width: "25ch" }}
+              variant="outlined"
+              style={{
+                margin: "0px",
+                width: "100%",
+              }}
+            >
+              <InputLabel htmlFor="password2">Repeat password</InputLabel>
+              <OutlinedInput
+                id="password2"
+                type={values.showPassword2 ? "text" : "password2"}
+                value={values.password2}
+                onChange={handleChange("password2")}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword2}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {values.showPassword2 ? (
+                        <VisibilityOff />
+                      ) : (
+                        <Visibility />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                label="Repeat password"
+              />
+            </FormControl>
             <Button
               variant="contained"
               style={{
@@ -149,7 +191,7 @@ export default function LoginPage() {
                 width: "100%",
               }}
             >
-              Login
+              CREATE USER
             </Button>
             <Box
               style={{
@@ -167,22 +209,10 @@ export default function LoginPage() {
                   color: "grey",
                 }}
                 onClick={(e) => {
-                  navigate("/recover");
+                  navigate("/login");
                 }}
               >
-                Forgot Password?
-              </Button>
-              <Button
-                size="small"
-                color="secondary"
-                style={{
-                  color: "grey",
-                }}
-                onClick={(e) => {
-                  navigate("/signup");
-                }}
-              >
-                New user?
+                Have a user?
               </Button>
             </Box>
           </Box>

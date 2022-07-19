@@ -36,6 +36,12 @@ function App() {
   const NotFound = lazy(() => import("./components/notFound/NotFound.js"));
   const Homepage = lazy(() => import("./components/homepage/Homepage.js"));
   const LoginPage = lazy(() => import("./components/loginpage/Loginpage.js"));
+  const SignupPage = lazy(() =>
+    import("./components/signuppage/Signuppage.js")
+  );
+  const RecoverPage = lazy(() =>
+    import("./components/recoverpage/Recoverpage.js")
+  );
 
   return (
     <>
@@ -99,6 +105,55 @@ function App() {
                       }
                     >
                       <LoginPage />
+                    </Suspense>
+                  )}
+                </>
+              }
+            />
+
+            <Route
+              path="/signup"
+              exact
+              element={
+                <>
+                  {!isReady && (
+                    <Box className="loadingappBox">
+                      <SvganimLoading />
+                    </Box>
+                  )}
+                  {isReady && (
+                    <Suspense
+                      fallback={
+                        <Box className="loadingappBox">
+                          <SvganimLoading />
+                        </Box>
+                      }
+                    >
+                      <SignupPage />
+                    </Suspense>
+                  )}
+                </>
+              }
+            />
+            <Route
+              path="/recover"
+              exact
+              element={
+                <>
+                  {!isReady && (
+                    <Box className="loadingappBox">
+                      <SvganimLoading />
+                    </Box>
+                  )}
+                  {isReady && (
+                    <Suspense
+                      fallback={
+                        <Box className="loadingappBox">
+                          <SvganimLoading />
+                        </Box>
+                      }
+                    >
+                      <RecoverPage />
                     </Suspense>
                   )}
                 </>
