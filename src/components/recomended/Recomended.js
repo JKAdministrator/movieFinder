@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import * as api from "../../api/index";
 import _ from "lodash";
 import { useSelector } from "react-redux";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, NavLink } from "react-router-dom";
 import "./style.css";
 export default function Recomended() {
   const state = useSelector((state) => {
@@ -60,6 +60,16 @@ export default function Recomended() {
               <Button variant="outlined" onClick={handleOnClickMovie}>
                 More Info
               </Button>
+              <NavLink
+                to={`/movie?movieId=${movieData.id}`}
+                style={({ isActive }) => ({
+                  color: isActive
+                    ? "greenyellow"
+                    : "white",
+                })}
+              >
+                More Info 2
+              </NavLink>
             </Box>
           </Box>
         </Box>

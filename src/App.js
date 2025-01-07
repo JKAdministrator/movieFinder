@@ -6,7 +6,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import "./App.css";
 import SvganimLoading from "./components/svganimLoading/SvganimLoading";
-
+import DetailDialog from "./components/detailDialog/DetailDialog"; 
+import DetailDialogPage from "./components/detailDialogPage/DetailDialogPage.js";
 const darkTheme = createTheme({
   palette: {
     mode: "dark",
@@ -42,6 +43,7 @@ function App() {
   const RecoverPage = lazy(() =>
     import("./components/recoverpage/Recoverpage.js")
   );
+  console.log('redraw app.js');
 
   return (
     <>
@@ -81,6 +83,31 @@ function App() {
                       }
                     >
                       <Homepage />
+                      <DetailDialog />
+                      </Suspense>
+                  )}
+                </>
+              }
+            />
+            <Route
+              path="/movie"
+              exact
+              element={
+                <>
+                  {!isReady && (
+                    <Box className="loadingappBox">
+                      <SvganimLoading />
+                    </Box>
+                  )}
+                  {isReady && (
+                    <Suspense
+                      fallback={
+                        <Box className="loadingappBox">
+                          <SvganimLoading />
+                        </Box>
+                      }
+                    >
+                      <DetailDialogPage />
                     </Suspense>
                   )}
                 </>

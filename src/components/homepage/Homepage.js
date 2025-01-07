@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Box } from "@mui/material";
-import DetailDialog from "../detailDialog/DetailDialog";
+//import DetailDialog from "../detailDialog/DetailDialog"; 
 import FiltersDialog from "../filtersDialog/FiltersDialog";
 import Footer from "../footer/Footer";
 import MoviesList from "../moviesList/MoviesList";
@@ -58,7 +58,7 @@ export default function Homepage() {
           })}
           <MoviesSearch />
         </Box>
-        <DetailDialog />
+        
         <FiltersDialog />
         <Footer />
       </div>

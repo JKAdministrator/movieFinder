@@ -28,7 +28,7 @@ const onCardMediaError = (e) => {
   e.target.src = "./backdropPlaceholder.jpg";
 };
 
-export default function DetailDialog({ isOpen }) {
+export default function DetailDialogPage({ isOpen }) {
   const dispatch = useDispatch();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -73,24 +73,16 @@ export default function DetailDialog({ isOpen }) {
   if (movieData?.error) handleClose();
   console.log('redraw detailDialog');
   return (
-    <Dialog
-      open={movieId ? true : false}
-      TransitionComponent={Transition}
-      onClose={handleClose}
-      fullScreen={fullScreen}
-      PaperProps={{
-        style: {
-          backgroundColor: "transparent",
-          boxShadow: "none",
-          overflow: "hidden",
-          background: movieData ? "none" : "unset",
-        },
-      }}
+    <Box
+    style={{
+      minHeight: "100vh",
+    }}
     >
       {movieData ? (
         <Card
           style={{
-            height: "100%",
+            height: "100vh",
+            width: "100%",
             overflow: "auto",
           }}
         >
@@ -157,6 +149,6 @@ export default function DetailDialog({ isOpen }) {
           <CircularProgress />
         </Box>
       )}
-    </Dialog>
+    </Box>
   );
 }
